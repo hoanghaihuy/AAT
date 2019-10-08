@@ -39,10 +39,10 @@ int main(int argc, char *argv[]) {
             Artifacts[i].display();
         }
 
-        TechEra tech(TECHNOLOGY_ERA::MIDDLE_AGE);
-        int popNum = intRandom(MIN_OF_VILLAGE, MAX_OF_METROPOLIS);
-        PopulationCentre pop(tech, popNum);
-        pop.display();
+        TechEra currentTechEra(TECHNOLOGY_ERA::INFORMATION_AGE);
+        int currentPopNum = intRandom(MIN_OF_METROPOLIS, MAX_OF_METROPOLIS);
+        PopulationCentre currentPop(currentTechEra, currentPopNum);
+        currentPop.display();
 
         return 0;
     }
