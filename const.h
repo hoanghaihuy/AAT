@@ -22,11 +22,11 @@
     const int MIN_AGE = 25;
     const int MAX_ABILITY = 80;
     const int MIN_ABILITY = 60;
-    const int JUMP_ENGINEER = 1;
-    const int DOCTOR = 2;
-    const int HISTORIAN = 3;
-    const int SECURITY = 4;
-    const int CHRONO_PET = 5;
+    const int JUMP_ENGINEER = 0;
+    const int DOCTOR = 1;
+    const int HISTORIAN = 2;
+    const int SECURITY = 3;
+    const int CHRONO_PET = 4;
 
     // population centre
     enum POPULATION_CENTRE {HAMLET, VILLAGE, TOWN, CITY, METROPOLIS};

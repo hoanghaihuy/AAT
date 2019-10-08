@@ -48,27 +48,27 @@ void handlingArtifactData(int numberOfArtifacts, std::vector<Artifact> &Artifact
 void handlingChrononautsData(std::vector<Chrononaut> &Chrononauts) {
     Chrononaut chrononaut;
 
-    chrononaut = JumpEngineer("Steve", JUMP_ENGINEER);
+    chrononaut = JumpEngineer("Jump engineer", JUMP_ENGINEER);
     chrononaut.generateActualAge();
     chrononaut.generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = Doctor("Strange", DOCTOR);
+    chrononaut = Doctor("Doctor", DOCTOR);
     chrononaut.generateActualAge();
     chrononaut.generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = Historian("Hulk", HISTORIAN);
+    chrononaut = Historian("Historian", HISTORIAN);
     chrononaut.generateActualAge();
     chrononaut.generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = Security("Stark", SECURITY);
+    chrononaut = Security("Security", SECURITY);
     chrononaut.generateActualAge();
     chrononaut.generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = ChronoPet("Thor", CHRONO_PET);
+    chrononaut = ChronoPet("ChronoPet", CHRONO_PET);
     chrononaut.generateActualAge();
     chrononaut.generateAbility();
     Chrononauts.push_back(chrononaut);
