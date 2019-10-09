@@ -11,6 +11,11 @@ void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int
     std::cout << "Current handling artifact: ";
     artifact.display();
 
-    jumpEngineer->makeJump(artifact.getPeriod(), techEra, popCentre);
-    numberOfJumps -=3;
+    if (numberOfJumps > 0) {
+        jumpEngineer->makeJump(artifact.getPeriod(), techEra, popCentre);
+        popCentre.setTechEra(techEra);
+        numberOfJumps--;
+    }
+    // popCentre.display();
+
 };

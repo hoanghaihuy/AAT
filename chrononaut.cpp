@@ -55,7 +55,6 @@ void JumpEngineer::makeJump(int period, TechEra &techEra, PopulationCentre &popC
     // std::cout << "current pop: " << pop->getPopNum() << " " << "new pop: " << newPopNum << std::endl;
     popCentre = PopulationCentre(techEra, newPopNum, currentPastYear);
     popCentre.display();
-    
 };
 
 // Doctor

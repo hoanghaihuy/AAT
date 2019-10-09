@@ -43,12 +43,12 @@ int main(int argc, char *argv[]) {
         TechEra currentTechEra(TECHNOLOGY_ERA::MODERN_AGE);
         int currentPopNum = intRandom(MIN_OF_METROPOLIS, MAX_OF_METROPOLIS);
         PopulationCentre currentPopCentre(currentTechEra, currentPopNum, MODERN_YEAR);
-        // currentPop.display();
 
         for (int i = 0; i < numberOfArtifacts; i++) {
             findArtifact(Artifacts[i], Chrononauts, numberOfJumps, currentTechEra, currentPopCentre);
             if (numberOfJumps <= 0) break;
         }
+
 
         return 0;
     }

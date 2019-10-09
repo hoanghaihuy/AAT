@@ -78,6 +78,7 @@
             ~PopulationCentre();
             int getCurrentYear();
             void setCurrentYear(int);
+            void setTechEra(TechEra);
             void display();
     };
 

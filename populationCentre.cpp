@@ -109,7 +109,7 @@ void Functionality::display() {
 // Population class functions
 Population::Population() : number(0) {
     Element::setLevel(0);
-    Element::setGrowRate(0);
+    Element::setGrowRate(0.0);
 };
 Population::Population(int _number) : number(_number) {};
 void Population::generatePopImpact(TechEra _techEra) {
@@ -129,9 +129,9 @@ void Population::display() {
 
 // PopulationCentre class functions
 PopulationCentre::PopulationCentre() {
-    technology = new TechEra();
+    technology = nullptr;
     functionalities = {};
-    population = new Population();
+    population = nullptr;
     name = "";
     populationType = HAMLET;
 };
@@ -207,4 +207,7 @@ void PopulationCentre::setCurrentYear(int year) {
 };
 PopulationCentre::~PopulationCentre() {
     // delete population;
+}
+void PopulationCentre::setTechEra(TechEra techEra) {
+    technology = &techEra;
 }
