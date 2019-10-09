@@ -2,6 +2,8 @@
 #define CONST_H
     #include <iostream>
 
+    const int MODERN_YEAR = 2525;
+
     // error
     const int COMMAND_LINE_ERROR = 1;
     const int OPEN_FILE_ERROR = 2;
@@ -32,7 +34,9 @@
     enum POPULATION_CENTRE {HAMLET, VILLAGE, TOWN, CITY, METROPOLIS};
 
     // techonology era
-    enum TECHNOLOGY_ERA {RENAISSANCE, MIDDLE_AGE, INFORMATION_AGE};
+    enum TECHNOLOGY_ERA {EARLY_AGE, MIDDLE_AGE, MODERN_AGE};
+    const int END_OF_EARLY_AGE = 999;
+    const int END_OF_MIDDLE_AGE = 1999;
 
     // functionality
     enum FUNCTION_TYPE {DEFENDANT, HISTORY, HEALTH};

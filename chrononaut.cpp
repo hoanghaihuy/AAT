@@ -1,3 +1,4 @@
+#include <math.h>
 #include "chrononaut.h"
 #include "randoms.h"
 #include "const.h"
@@ -29,7 +30,33 @@ void Chrononaut::affectAbility() {};
 JumpEngineer::JumpEngineer() {};
 JumpEngineer::JumpEngineer(std::string _name, int _type)
             : Chrononaut(_name, _type) {};
-void JumpEngineer::makeJump() {};
+TECHNOLOGY_ERA JumpEngineer::findTechEra(int currentYear) {
+    if (currentYear <= END_OF_EARLY_AGE) {
+        return EARLY_AGE;
+    } else if (currentYear <= END_OF_MIDDLE_AGE) {
+        return MIDDLE_AGE;
+    } else {
+        return MODERN_AGE;
+    }
+};
+void JumpEngineer::makeJump(int period, TechEra &techEra, PopulationCentre &popCentre) {
+    // the year in the past that the team jumps to
+    int currentPastYear = popCentre.getCurrentYear();
+    currentPastYear -= period;
+
+    // find technology era of the year just jumped to
+    TECHNOLOGY_ERA currentTechEraType = findTechEra(currentPastYear);
+    techEra = TechEra(currentTechEraType);
+
+    // generate new number of population based on the grow rate of population,
+    // the current number of population in the current popCentre and the period of time
+    Population *pop = popCentre.population;
+    int newPopNum = pop->getPopNum() * (pow((1.0 - pop->getGrowRate()), double(period)));
+    // std::cout << "current pop: " << pop->getPopNum() << " " << "new pop: " << newPopNum << std::endl;
+    popCentre = PopulationCentre(techEra, newPopNum, currentPastYear);
+    popCentre.display();
+    
+};
 
 // Doctor
 Doctor::Doctor() {};

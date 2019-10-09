@@ -5,4 +5,4 @@
 #include "chrononaut.h"
 
 void handlingArtifactData(int numberOfArtifacts, std::vector<Artifact> &Artifacts);
-void handlingChrononautsData(std::vector<Chrononaut> &Chrononauts);
+void handlingChrononautsData(std::vector<Chrononaut*> &Chrononauts);

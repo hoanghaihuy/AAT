@@ -4,23 +4,23 @@
 #include "randoms.h"
 
 // Technology Era class functions
-TechEra::TechEra() : name(""), type(RENAISSANCE), level(0), growRate(0) {};
+TechEra::TechEra() : name(""), type(EARLY_AGE), level(0), growRate(0) {};
 TechEra::TechEra(TECHNOLOGY_ERA _type) : type(_type) {
     switch (type) {
-        case RENAISSANCE:
-            name = "Renaissance";
+        case EARLY_AGE:
+            name = "Early Age";
             generateLevel(0, 25);
-            generateGrowRate(0.1, 0.05);
+            generateGrowRate(0.01, 0.005);
             break;
         case MIDDLE_AGE:
             name = "Middle Age";
             generateLevel(25, 50);
-            generateGrowRate(0.2, 0.07);
+            generateGrowRate(0.02, 0.007);
             break;
-        case INFORMATION_AGE:
-            name = "Information Age";
+        case MODERN_AGE:
+            name = "Modern Age";
             generateLevel(50, 100);
-            generateGrowRate(0.3, 0.09);
+            generateGrowRate(0.03, 0.009);
             break;
         default:
             break;
@@ -50,8 +50,9 @@ double TechEra::getGrowRate() {
     return growRate;
 };
 void TechEra::display() {
-    std::cout << "Technology era: " << name << ": " << level << ", " << std::setiosflags(std::ios::fixed | std::ios::showpoint) << std::setprecision(2) << growRate << std::endl;
+    std::cout << "Technology era: " << name << ": " << level << ", " << std::setiosflags(std::ios::fixed | std::ios::showpoint) << std::setprecision(5) << growRate << std::endl;
 };
+TECHNOLOGY_ERA TechEra::getTechEra() { return type; }
 
 // Element class functions
 void Element::generateLevel(int min, int max) {
@@ -112,13 +113,16 @@ Population::Population() : number(0) {
 };
 Population::Population(int _number) : number(_number) {};
 void Population::generatePopImpact(TechEra _techEra) {
+    // the level and growth rate of population is based on level and growth rate of technology era
     double full = 100;
     double diff = intRandom(50, 100);
-    int level = lround((diff / full) * _techEra.getLevel());
-    double growRate = (diff / full) * _techEra.getGrowRate();
-    Element::setLevel(level);
-    Element::setGrowRate(growRate);
+    int levelPop = (diff / full) * _techEra.getLevel();
+    diff = intRandom(0, 50);
+    double growRatePop = (diff / full) * _techEra.getGrowRate();
+    Element::setLevel(levelPop);
+    Element::setGrowRate(growRatePop);
 };
+int Population::getPopNum() { return number; };
 void Population::display() {
     std::cout << "population: " << number << ", level: " << Element::getLevel() << ", growth rate: " << Element::getGrowRate() << std::endl;
 };
@@ -131,8 +135,9 @@ PopulationCentre::PopulationCentre() {
     name = "";
     populationType = HAMLET;
 };
-PopulationCentre::PopulationCentre(TechEra _techEra, int _popNum) {
+PopulationCentre::PopulationCentre(TechEra _techEra, int _popNum, int _currentYear) {
     technology = &_techEra;
+    currentYear = _currentYear;
     population = new Population(_popNum);
     population->generatePopImpact(_techEra);
 
@@ -178,18 +183,27 @@ PopulationCentre::PopulationCentre(TechEra _techEra, int _popNum) {
             break;
     }
 };
-PopulationCentre::PopulationCentre(const PopulationCentre&) {};
 // PopulationCentre& PopulationCentre::operator++() {};
 void PopulationCentre::display() {
     technology->display();
     std::cout << "This is a " << name << " with ";
     population->display();
-    std::cout << "This " << name << " has: ";
-    for (int i = 0; i < functionalities.size(); i++) {
-        functionalities[i].display();
-        if (i != functionalities.size() - 1) std::cout << ", ";
+    if (functionalities.size() > 0) {
+        std::cout << "This " << name << " has: ";
+        for (int i = 0; i < functionalities.size(); i++) {
+            functionalities[i].display();
+            if (i != functionalities.size() - 1) std::cout << ", ";
+        }
+    } else {
+        std::cout << "This " << name << " does not have any functionalities.";
     }
     std::cout << std::endl;
+};
+int PopulationCentre::getCurrentYear() {
+    return currentYear;
+};
+void PopulationCentre::setCurrentYear(int year) {
+    currentYear = year;
 };
 PopulationCentre::~PopulationCentre() {
     // delete population;

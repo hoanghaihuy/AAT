@@ -10,6 +10,7 @@
         public:
             Artifact();
             Artifact(std::string, std::string, int);
+            int getPeriod();
             void display();
     };
 #endif

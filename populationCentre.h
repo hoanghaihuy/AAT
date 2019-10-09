@@ -23,6 +23,7 @@
             int getLevel();
             void setGrowRate(double);
             double getGrowRate();
+            TECHNOLOGY_ERA getTechEra();
     };
 
     class Element {
@@ -56,6 +57,7 @@
             Population();
             Population(int);
             void generatePopImpact(TechEra);
+            int getPopNum();
             void display();
     };
 
@@ -64,16 +66,18 @@
             std::string name;
             POPULATION_CENTRE populationType;
             int yearSpent;
+            int currentYear;
+            void generateFunctionality();
+        public:
             TechEra *technology;
             std::vector<Functionality> functionalities;
             Population *population;
-            void generateFunctionality();
-        public:
             PopulationCentre();
-            PopulationCentre(TechEra, int);
-            PopulationCentre(const PopulationCentre&);
+            PopulationCentre(TechEra, int, int);
             PopulationCentre& operator++();
             ~PopulationCentre();
+            int getCurrentYear();
+            void setCurrentYear(int);
             void display();
     };
 

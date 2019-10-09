@@ -1,6 +1,7 @@
 #ifndef CHRONONAUT_H
 #define CHRONONAUT_H
     #include <iostream>
+    #include "populationCentre.h"
 
     class Chrononaut {
         private:
@@ -22,15 +23,16 @@
             void display();
     };
 
-    class JumpEngineer : virtual public Chrononaut {
+    class JumpEngineer : public Chrononaut {
         private:
         public:
             JumpEngineer();
             JumpEngineer(std::string, int);
-            void makeJump();
+            TECHNOLOGY_ERA findTechEra(int);
+            void makeJump(int, TechEra&, PopulationCentre&);
     };
 
-    class Doctor : virtual public Chrononaut {
+    class Doctor : public Chrononaut {
         private:
         public:
             Doctor();
@@ -38,7 +40,7 @@
             void cure();
     };
 
-    class Historian : virtual public Chrononaut {
+    class Historian : public Chrononaut {
         private:
         public:
             Historian();
@@ -46,7 +48,7 @@
             void findInfo();
     };
 
-    class Security : virtual public Chrononaut {
+    class Security : public Chrononaut {
         private:
         public:
             Security();
@@ -54,7 +56,7 @@
             void interactLocal();
     };
 
-    class ChronoPet : virtual public Chrononaut {
+    class ChronoPet : public Chrononaut {
         private:
         public:
             ChronoPet();

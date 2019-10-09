@@ -45,32 +45,33 @@ void handlingArtifactData(int numberOfArtifacts, std::vector<Artifact> &Artifact
     Artifacts = array;
 }
 
-void handlingChrononautsData(std::vector<Chrononaut> &Chrononauts) {
-    Chrononaut chrononaut;
+void handlingChrononautsData(std::vector<Chrononaut*> &Chrononauts) {
+    Chrononaut *chrononaut;
 
-    chrononaut = JumpEngineer("Jump engineer", JUMP_ENGINEER);
-    chrononaut.generateActualAge();
-    chrononaut.generateAbility();
+    chrononaut = new JumpEngineer("Jump engineer", JUMP_ENGINEER);
+    chrononaut->generateActualAge();
+    chrononaut->generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = Doctor("Doctor", DOCTOR);
-    chrononaut.generateActualAge();
-    chrononaut.generateAbility();
+    chrononaut = new Doctor("Doctor", DOCTOR);
+    chrononaut->generateActualAge();
+    chrononaut->generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = Historian("Historian", HISTORIAN);
-    chrononaut.generateActualAge();
-    chrononaut.generateAbility();
+    chrononaut = new Historian("Historian", HISTORIAN);
+    chrononaut->generateActualAge();
+    chrononaut->generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = Security("Security", SECURITY);
-    chrononaut.generateActualAge();
-    chrononaut.generateAbility();
+    chrononaut = new Security("Security", SECURITY);
+    chrononaut->generateActualAge();
+    chrononaut->generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    chrononaut = ChronoPet("ChronoPet", CHRONO_PET);
-    chrononaut.generateActualAge();
-    chrononaut.generateAbility();
+    chrononaut = new ChronoPet("ChronoPet", CHRONO_PET);
+    chrononaut->generateActualAge();
+    chrononaut->generateAbility();
     Chrononauts.push_back(chrononaut);
 
+    delete chrononaut;
 }

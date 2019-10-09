@@ -7,3 +7,6 @@ Artifact::Artifact(std::string _name, std::string _description, int _estimatePer
 void Artifact::display() {
         std::cout << name << ", " << description << ", " << estimatePeriod << std::endl;
 }
+int Artifact::getPeriod() {
+        return estimatePeriod;
+}
