@@ -41,8 +41,8 @@ void TechEra::generateLevel(int min, int max) {
 void TechEra::generateGrowRate(double mean, double stddev) {
     growRate = doubleRandom(mean, stddev);
 };
-void TechEra::setLevel(int _level) { level = _level; };
-int TechEra::getLevel() {
+void TechEra::setLevel(double _level) { level = _level; };
+double TechEra::getLevel() {
     return level;
 };
 void TechEra::setGrowRate(double _growRate) { growRate = _growRate; };
@@ -50,16 +50,20 @@ double TechEra::getGrowRate() {
     return growRate;
 };
 void TechEra::display() {
-    std::cout << "Technology era: " << name << ": " << level << ", " << std::setiosflags(std::ios::fixed | std::ios::showpoint) << std::setprecision(5) << growRate << std::endl;
+    std::cout << "Technology era: " << name << ": " << std::setiosflags(std::ios::fixed | std::ios::showpoint) << std::setprecision(2) << level << ", " << std::setprecision(5) << growRate << std::endl;
 };
 TECHNOLOGY_ERA TechEra::getTechEra() { return type; }
+void TechEra::affectLevel(double otherLevel) {
+    level += otherLevel * growRate;
+    growRate += (otherLevel / 100) * growRate;
+};
 
 // Element class functions
 void Element::generateLevel(int min, int max) {
     level = intRandom(min, max);
 };
-void Element::setLevel(int _level) { level = _level; };
-int Element::getLevel() {
+void Element::setLevel(double _level) { level = _level; };
+double Element::getLevel() {
     return level;
 };
 void Element::setGrowRate(double _growRate) { growRate = _growRate; };
@@ -69,7 +73,9 @@ double Element::getGrowRate() {
 
 // Functionality class functions
 Functionality::Functionality() : name(""), type(HISTORY) {}
-Functionality::Functionality(FUNCTION_TYPE _type, std::string _name) : type(_type), name(_name) {
+Functionality::Functionality(FUNCTION_TYPE _type, std::string _name, TechEra techEra) : type(_type), name(_name) {
+    // growth rate of functionalities is equal to growth rate of technology era
+    setGrowRate(techEra.getGrowRate());
     switch (type) {
         case DEFENDANT:
             if (name == "Police Station") {
@@ -103,7 +109,7 @@ Functionality::Functionality(FUNCTION_TYPE _type, std::string _name) : type(_typ
     }
 };
 void Functionality::display() {
-    std::cout << name;
+    std::cout << name << " " << std::setprecision(2) << getLevel() << " " << std::setprecision(5) << getGrowRate();
 };
 
 // Population class functions
@@ -116,7 +122,7 @@ void Population::generatePopImpact(TechEra _techEra) {
     // the level and growth rate of population is based on level and growth rate of technology era
     double full = 100;
     double diff = intRandom(50, 100);
-    int levelPop = (diff / full) * _techEra.getLevel();
+    double levelPop = (diff / full) * _techEra.getLevel();
     diff = intRandom(0, 50);
     double growRatePop = (diff / full) * _techEra.getGrowRate();
     Element::setLevel(levelPop);
@@ -124,7 +130,7 @@ void Population::generatePopImpact(TechEra _techEra) {
 };
 int Population::getPopNum() { return number; };
 void Population::display() {
-    std::cout << "population: " << number << ", level: " << Element::getLevel() << ", growth rate: " << Element::getGrowRate() << std::endl;
+    std::cout << "population: " << number << ", level: " << std::setprecision(2) << Element::getLevel() << ", growth rate: " << std::setprecision(5) << Element::getGrowRate() << std::endl;
 };
 
 // PopulationCentre class functions
@@ -159,24 +165,24 @@ PopulationCentre::PopulationCentre(TechEra _techEra, int _popNum, int _currentYe
             break;
         case VILLAGE:
             name = "Village";
-            functionalities.push_back(Functionality(HISTORY, "Story Teller"));
+            functionalities.push_back(Functionality(HISTORY, "Story Teller", _techEra));
             break;
         case TOWN:
             name = "Town";
-            functionalities.push_back(Functionality(HISTORY, "Book Shop"));
-            functionalities.push_back(Functionality(HEALTH, "Clinic"));
+            functionalities.push_back(Functionality(HISTORY, "Book Shop", _techEra));
+            functionalities.push_back(Functionality(HEALTH, "Clinic", _techEra));
             break;
         case CITY:
             name = "City";
-            functionalities.push_back(Functionality(HISTORY, "Library"));
-            functionalities.push_back(Functionality(HEALTH, "Medical Centre"));
-            functionalities.push_back(Functionality(DEFENDANT, "Police Station"));
+            functionalities.push_back(Functionality(HISTORY, "Library", _techEra));
+            functionalities.push_back(Functionality(HEALTH, "Medical Centre", _techEra));
+            functionalities.push_back(Functionality(DEFENDANT, "Police Station", _techEra));
             break;
         case METROPOLIS:
             name = "Metropolis";
-            functionalities.push_back(Functionality(HISTORY, "Library"));
-            functionalities.push_back(Functionality(HEALTH, "Hospital"));
-            functionalities.push_back(Functionality(DEFENDANT, "Army"));
+            functionalities.push_back(Functionality(HISTORY, "Library", _techEra));
+            functionalities.push_back(Functionality(HEALTH, "Hospital", _techEra));
+            functionalities.push_back(Functionality(DEFENDANT, "Army", _techEra));
             break;
         default:
             name = "Hamlet";
@@ -211,3 +217,17 @@ PopulationCentre::~PopulationCentre() {
 void PopulationCentre::setTechEra(TechEra techEra) {
     technology = &techEra;
 }
+void PopulationCentre::techEraAffected(TechEra techEra) {
+    // update population level and growth rate based on the diff between it and tech era with new level
+    // and growth rate of new tech era
+    population->setLevel((technology->getLevel() / population->getLevel()) * techEra.getLevel());
+    population->setGrowRate((technology->getGrowRate() / population->getGrowRate()) * techEra.getGrowRate());
+
+    // update functionalities growth rate
+    for (int i = 0; i < functionalities.size(); i++) {
+        functionalities[i].setGrowRate(techEra.getGrowRate());
+    }
+
+    // update tech era of popCentre
+    technology = &techEra;
+};

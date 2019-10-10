@@ -8,7 +8,7 @@
         private:
             std::string name;
             TECHNOLOGY_ERA type;
-            int level;
+            double level;
             double growRate;
         public:
             TechEra();
@@ -18,9 +18,9 @@
             void generateLevel(int, int);
             void generateGrowRate(double, double);
             void affectGrowRate();
-            void affectLevel();
-            void setLevel(int);
-            int getLevel();
+            void affectLevel(double otherLevel);
+            void setLevel(double);
+            double getLevel();
             void setGrowRate(double);
             double getGrowRate();
             TECHNOLOGY_ERA getTechEra();
@@ -28,14 +28,14 @@
 
     class Element {
     private:
-        int level;
+        double level;
         double growRate;
     public:
         void generateLevel(int, int);
         void affectGrowRate();
         void affectLevel();
-        void setLevel(int);
-        int getLevel();
+        void setLevel(double);
+        double getLevel();
         void setGrowRate(double);
         double getGrowRate();
     };
@@ -46,7 +46,7 @@
             FUNCTION_TYPE type;
         public:
             Functionality();
-            Functionality(FUNCTION_TYPE, std::string);
+            Functionality(FUNCTION_TYPE, std::string, TechEra);
             void display();
     };
 
@@ -79,6 +79,7 @@
             int getCurrentYear();
             void setCurrentYear(int);
             void setTechEra(TechEra);
+            void techEraAffected(TechEra);
             void display();
     };
 

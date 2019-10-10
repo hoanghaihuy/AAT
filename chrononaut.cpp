@@ -25,6 +25,7 @@ void Chrononaut::generateAbility() {
 };
 void Chrononaut::improveAbility() {};
 void Chrononaut::affectAbility() {};
+int Chrononaut::getAbilityLevel() { return abilityLevel; };
 
 // Jump engineer
 JumpEngineer::JumpEngineer() {};

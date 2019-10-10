@@ -9,7 +9,7 @@
             int type;
             int actualAge;
             int travelAge;
-            double abilityLevel;
+            int abilityLevel;
             bool isDead;
             int chanceAffected;
         public:
@@ -20,6 +20,7 @@
             void generateAbility();
             void improveAbility();
             void affectAbility();
+            int getAbilityLevel();
             void display();
     };
 

@@ -6,7 +6,5 @@
     #include "chrononaut.h"
     #include "populationCentre.h"
 
-    void firstJump();
-
-    void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int &numberOfJumps, TechEra &TechEra, PopulationCentre &popCentre);
+    void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int &numberOfJumps, TechEra &techEra, PopulationCentre &popCentre);
 #endif

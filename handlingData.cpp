@@ -46,7 +46,7 @@ void handlingArtifactData(int numberOfArtifacts, std::vector<Artifact> &Artifact
 }
 
 void handlingChrononautsData(std::vector<Chrononaut*> &Chrononauts) {
-    Chrononaut *chrononaut;
+    Chrononaut *chrononaut = nullptr;
 
     chrononaut = new JumpEngineer("Jump engineer", JUMP_ENGINEER);
     chrononaut->generateActualAge();
@@ -73,5 +73,4 @@ void handlingChrononautsData(std::vector<Chrononaut*> &Chrononauts) {
     chrononaut->generateAbility();
     Chrononauts.push_back(chrononaut);
 
-    delete chrononaut;
 }
