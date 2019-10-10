@@ -23,7 +23,9 @@ void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int
         jumpEngineer->makeJump(artifact.getPeriod(), techEra, popCentre);
         popCentre.setTechEra(techEra);
         numberOfJumps--;
+
         // chrononauts affect on the level of tech era
+        // then the tech era affect on the rest of elements of popCentre
         techEra.affectLevel(averageAbilityLevel);
         popCentre.techEraAffected(techEra);
         popCentre.display();

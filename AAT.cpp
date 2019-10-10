@@ -49,6 +49,9 @@ int main(int argc, char *argv[]) {
             if (numberOfJumps <= 0) break;
         }
 
+        for (int i = 0; i < Chrononauts.size(); i++) {
+            delete Chrononauts[i];
+        }
 
         return 0;
     }
