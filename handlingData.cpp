@@ -74,3 +74,30 @@ void handlingChrononautsData(std::vector<Chrononaut*> &Chrononauts) {
     Chrononauts.push_back(chrononaut);
 
 }
+
+void handlingEventData(std::vector<Event> &Events) {
+    std::ifstream inFile;
+    inFile.open(EVENT_FILE);
+    std::vector<Event> array;
+
+    if (!inFile) {
+        errorHandling(OPEN_FILE_ERROR, EVENT_FILE);
+    }
+
+    std::string line;
+    size_t delimiterPos;
+
+    while (getline(inFile, line)) {
+        std::string name, description;
+
+        delimiterPos = line.find(DELIMITER);
+        name = line.substr(0, delimiterPos);
+        line.erase(0, delimiterPos + 1);
+
+        description = line;
+
+        Events.push_back(Event(name, description));
+
+        if (inFile.eof()) break;
+    }
+}

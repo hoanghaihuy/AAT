@@ -2,6 +2,9 @@
 #include "const.h"
 
 void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int &numberOfJumps, TechEra &techEra, PopulationCentre &popCentre) {
+    std::vector<Event> Events;
+    handlingEventData(Events);
+
     JumpEngineer *jumpEngineer = ((JumpEngineer*)Chrononauts[JUMP_ENGINEER]);
     Doctor *doctor = ((Doctor*)Chrononauts[DOCTOR]);
     Historian *historian = ((Historian*)Chrononauts[HISTORIAN]);
@@ -29,7 +32,21 @@ void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int
         techEra.affectLevel(averageAbilityLevel);
         popCentre.techEraAffected(techEra);
         popCentre.display();
+
+        while (artifact.getInfo() < 100) {
+            int spentYear = 1;
+            // event occur
+            generateEvent(spentYear, Events);
+            // handling event
+        }
     }
     // popCentre.display();
 
+};
+
+void generateEvent(int spentYear, std::vector<Event> Events) {
+    // spent year is limited to 10.
+    // The closer of spent year to 10, the bigger of the chance to generate event related to information and clue
+    
+    
 };

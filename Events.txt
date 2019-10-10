@@ -1,0 +1,9 @@
+Information;Some information is found
+Clue;A clue is found
+Artifact;The artifact is found
+Illness;There is a plague occuring at the moment
+War;There is a war occuring at the moment
+Technological breakthrough;The technology is developing stronger
+Social revolution;The social revolution is occuring
+Interaction;The interaction between chrononauts and locals is significantly
+Meeting;The meeting of the team is occuring

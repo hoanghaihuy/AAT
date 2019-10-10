@@ -6,11 +6,13 @@
             std::string name;
             std::string description;
             int estimatePeriod;
-            int info;
+            double info;
         public:
             Artifact();
             Artifact(std::string, std::string, int);
             int getPeriod();
             void display();
+            double getInfo();
+            void gainInfo(double);
     };
 #endif

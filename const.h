@@ -13,6 +13,7 @@
 
     // artifact
     const std::string ARTIFACT_FILE = "Artifacts.txt";
+    const std::string EVENT_FILE = "Events.txt";
     const int MIN_ARTIFACT = 1;
     const int MAX_ARTIFACT = 5;
     const int MIN_JUMP = 1;
