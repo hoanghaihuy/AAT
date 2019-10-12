@@ -2,6 +2,8 @@
 #define CHRONONAUT_H
     #include <iostream>
     #include "populationCentre.h"
+    #include "artifact.h"
+    #include "event.h"
 
     class Chrononaut {
         private:
@@ -9,19 +11,25 @@
             int type;
             int actualAge;
             int travelAge;
-            int abilityLevel;
-            bool isDead;
+            double abilityLevel;
             int chanceAffected;
+            double health;
         public:
             Chrononaut();
             Chrononaut(std::string, int);
             void increaseTravelAge();
             void generateActualAge();
             void generateAbility();
-            void improveAbility();
+            void improveAbility(TechEra);
             void affectAbility();
             int getAbilityLevel();
             void display();
+            double getHealth();
+            void setHealth(double);
+            void beingDamaged(double);
+            void getIllness();
+            void getWar();
+            bool isDead();
     };
 
     class JumpEngineer : public Chrononaut {
@@ -38,7 +46,7 @@
         public:
             Doctor();
             Doctor(std::string, int);
-            void cure();
+            double cure(Event, PopulationCentre);
     };
 
     class Historian : public Chrononaut {
@@ -46,7 +54,8 @@
         public:
             Historian();
             Historian(std::string, int);
-            void findInfo();
+            double findInfo(Event, bool);
+            void solvedEvent(double);
     };
 
     class Security : public Chrononaut {
@@ -54,7 +63,7 @@
         public:
             Security();
             Security(std::string, int);
-            void interactLocal();
+            void interactLocal(Event, TechEra&, PopulationCentre&);
     };
 
     class ChronoPet : public Chrononaut {
@@ -62,7 +71,7 @@
         public:
             ChronoPet();
             ChronoPet(std::string, int);
-            void protect();
+            double protect(Event, PopulationCentre);
     };
 
 #endif

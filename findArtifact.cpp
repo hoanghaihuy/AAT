@@ -36,12 +36,101 @@ void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int
         popCentre.display();
 
         while (artifact.getInfo() < FINISH_ARTIFACT) {
-            // event occur
-            Event event = generateEvent(popCentre.getYearSpent(), Events);
-            // handling event
+            if (popCentre.getYearSpent() < 10 && artifact.getInfo() < FINISH_ARTIFACT) {
+                // minimum event could occur in a year is 0, maximum is 2
+                double info = 0;
+                Event event;
+                bool hasGainedInfo = false;
+                int numberOfEvent = intRandom(0, 2);
+                if (numberOfEvent != 0) {
+                    for (int i = 0; i < numberOfEvent; i++) {
+                        // event occur
+                        event = generateEvent(popCentre.getYearSpent(), Events);
+                        event.generateLevel(popCentre);
+                        event.display();
 
-            artifact.gainInfo(50);
-            ++popCentre;
+                        // 1 team member would be affected by the event
+                        int memberIndex = intRandom(0, Chrononauts.size());
+
+                        // handling event
+                        // after handled an event, the ability level of chrononaut would be improved
+                        switch (event.getEventType()) {
+                            case INFORMATION:
+                                info = historian->findInfo(event, true);
+                                historian->improveAbility(techEra);
+                                historian->solvedEvent(info);
+                                hasGainedInfo = true;
+                                break;
+                            case CLUE:
+                                break;
+                            case ARTIFACT:
+                                info = 0;
+                                hasGainedInfo = true;
+                                artifact.gainInfo(FINISH_ARTIFACT - artifact.getInfo());
+                                break;
+                            case ILLNESS:
+                                // affect popCentre
+                                popCentre.decreasePop(true);
+
+                                // affect chrononaut
+                                Chrononauts[i]->getIllness();
+                                double damage = doctor->cure(event, popCentre);
+                                Chrononauts[i]->beingDamaged(damage);
+                                doctor->improveAbility(techEra);
+                                break;
+                            case WAR:
+                                // affect popCentre, increase tech level and growth rate, decrease number of population and change level and growth rate based on new techEra
+                                techEra.increaseGrowRate();
+                                techEra.increaseLevel();
+                                popCentre.setTechEra(techEra);
+                                popCentre.decreasePop();
+                                popCentre.population->generatePopImpact(techEra);
+
+                                // affect chrononaut
+                                Chrononauts[i]->getWar();
+                                double damage = chronoPet->protect(event, popCentre);
+                                Chrononauts[i]->beingDamaged(damage);
+                                chronoPet->improveAbility(techEra);
+                                break;
+                            case TECH_BREAKTHROUGH:
+                                techEra.affectedByBreakthrough();
+                                popCentre.population->generatePopImpact(techEra);
+                                popCentre.setTechEra(techEra);
+                                for (int j = 0; j < popCentre.functionalities.size(); j++) {
+                                    popCentre.functionalities[i].setGrowRate(techEra.getGrowRate());
+                                }
+                                break;
+                            case SOCIAL_REVOLUTION:
+                                popCentre.population->affectedByRevolution(popCentre);
+                                break;
+                            case INTERACTION:
+                                security->interactLocal(event, techEra, popCentre);
+                                break;
+                            case MEETING:
+                            
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                // in each year stepping forward, there will be information available
+                if (hasGainedInfo == false) {
+                    info = historian->findInfo(event, false);
+                }
+                artifact.gainInfo(info);
+
+                // handle data when step forward year by year
+                ++popCentre;
+                for (int i = 0; i < Chrononauts.size(); i++) {
+                    if (Chrononauts[i]->isDead() != true) {
+                        Chrononauts[i]->increaseTravelAge();
+                    }
+                }
+            } else {
+                artifact.gainInfo(FINISH_ARTIFACT - artifact.getInfo());
+            }
         }
     }
     // popCentre.display();

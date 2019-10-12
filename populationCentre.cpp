@@ -6,6 +6,9 @@
 // Technology Era class functions
 TechEra::TechEra() : name(""), type(EARLY_AGE), level(0), growRate(0) {};
 TechEra::TechEra(TECHNOLOGY_ERA _type) : type(_type) {
+    // level of early age is between 0-25 inclusive
+    // level of middle age is between 26-50 inclusive
+    // level of early age is between 51-100 inclusive
     switch (type) {
         case EARLY_AGE:
             name = "Early Age";
@@ -14,12 +17,12 @@ TechEra::TechEra(TECHNOLOGY_ERA _type) : type(_type) {
             break;
         case MIDDLE_AGE:
             name = "Middle Age";
-            generateLevel(25, 50);
+            generateLevel(26, 50);
             generateGrowRate(0.02, 0.007);
             break;
         case MODERN_AGE:
             name = "Modern Age";
-            generateLevel(50, 100);
+            generateLevel(51, 100);
             generateGrowRate(0.03, 0.009);
             break;
         default:
@@ -57,6 +60,41 @@ void TechEra::affectLevel(double otherLevel) {
     level += otherLevel * growRate;
     growRate += (otherLevel / 100) * growRate;
 };
+void TechEra::increaseGrowRate() {
+    double increaseLevel = intRandom(2, 5);
+    growRate += (growRate * increaseLevel);
+};
+void TechEra::increaseLevel() {
+    level += (growRate * level);
+    if (level <= 25) {
+        type = EARLY_AGE;
+        name = "Early Age";
+    } else if (level <= 50) {
+        type = MIDDLE_AGE;
+        name = "Middle Age";
+    } else {
+        type = MODERN_AGE;
+        name = "Modern Age";
+    }
+};
+void TechEra::affectedByBreakthrough() {
+    // the growth rate of tech era would be increased 2-5 times and the level will increase 1 time by the new grow rate
+    double breakthroughLevel = intRandom(2, 5);
+    growRate += (growRate * breakthroughLevel);
+    level += (growRate * level);
+
+    if (level <= 25) {
+        type = EARLY_AGE;
+        name = "Early Age";
+    } else if (level <= 50) {
+        type = MIDDLE_AGE;
+        name = "Middle Age";
+    } else {
+        type = MODERN_AGE;
+        name = "Modern Age";
+    }
+    std::cout << "Technology era has been increased with the new level " << level << " and new grow rate " << growRate << std::endl;
+};
 
 // Element class functions
 void Element::generateLevel(int min, int max) {
@@ -69,6 +107,9 @@ double Element::getLevel() {
 void Element::setGrowRate(double _growRate) { growRate = _growRate; };
 double Element::getGrowRate() {
     return growRate;
+};
+void Element::increaseLevel() {
+    level += (growRate * level);
 };
 
 // Functionality class functions
@@ -111,6 +152,7 @@ Functionality::Functionality(FUNCTION_TYPE _type, std::string _name, TechEra tec
 void Functionality::display() {
     std::cout << name << " " << std::setprecision(2) << getLevel() << " " << std::setprecision(5) << getGrowRate();
 };
+FUNCTION_TYPE Functionality::getType() { return type; };
 
 // Population class functions
 Population::Population() : number(0) {
@@ -129,8 +171,40 @@ void Population::generatePopImpact(TechEra _techEra) {
     Element::setGrowRate(growRatePop);
 };
 int Population::getPopNum() { return number; };
+void Population::setPopNum(int _number) { number = _number; };
 void Population::display() {
     std::cout << "population: " << number << ", level: " << std::setprecision(2) << Element::getLevel() << ", growth rate: " << std::setprecision(5) << Element::getGrowRate() << std::endl;
+};
+void Population::increasePopNum() {
+    number += (Element::getGrowRate() * number);
+};
+void Population::affectedByRevolution(PopulationCentre &popCentre) {
+    // revolution could cause increase or decrease of the growth rate of population centre
+    // the new number of population and level will be generated 1 time based on the new growth rate
+    double diff = intRandom(1, 200);
+    setGrowRate(getGrowRate() * (diff / 100));
+    setLevel(getLevel() + getLevel() * getGrowRate());
+    increasePopNum();
+
+    std::string name;
+    POPULATION_CENTRE type;
+    identifyPopType(getPopNum(), type);
+    identifyFunctionality(type, name, popCentre.functionalities, *(popCentre.technology));
+    popCentre.setType(type);
+    popCentre.setName(name);
+
+    std::cout << "After revolution, this place has become a " << popCentre.getName() << " which has ";
+    if (popCentre.functionalities.size() > 0) {
+        for (int i = 0; i < popCentre.functionalities.size(); i++) {
+            popCentre.functionalities[i].display();
+            if (i != popCentre.functionalities.size() - 1) std::cout << ", ";
+        }
+        std::cout << ". ";
+    } else {
+        std::cout << " no functionalities.";
+    }
+    std::cout << "With number of ";
+    display();
 };
 
 // PopulationCentre class functions
@@ -148,50 +222,40 @@ PopulationCentre::PopulationCentre(TechEra _techEra, int _popNum, int _currentYe
     population = new Population(_popNum);
     population->generatePopImpact(_techEra);
 
-    if (_popNum > MIN_OF_HAMLET && _popNum < MAX_OF_HAMLET) {
-        populationType = HAMLET;
-    } else if (_popNum > MIN_OF_VILLAGE && _popNum < MAX_OF_VILLAGE) {
-        populationType = VILLAGE;
-    } else if (_popNum > MIN_OF_TOWN && _popNum < MAX_OF_TOWN) {
-        populationType = TOWN;
-    } else if (_popNum > MIN_OF_CITY && _popNum < MAX_OF_CITY) {
-        populationType = CITY;
-    } else if (_popNum > MIN_OF_METROPOLIS && _popNum < MAX_OF_METROPOLIS) {
-        populationType = METROPOLIS ;
-    }
-
-    switch (populationType) {
-        case HAMLET:
-            name = "Hamlet";
-            break;
-        case VILLAGE:
-            name = "Village";
-            functionalities.push_back(Functionality(HISTORY, "Story Teller", _techEra));
-            break;
-        case TOWN:
-            name = "Town";
-            functionalities.push_back(Functionality(HISTORY, "Book Shop", _techEra));
-            functionalities.push_back(Functionality(HEALTH, "Clinic", _techEra));
-            break;
-        case CITY:
-            name = "City";
-            functionalities.push_back(Functionality(HISTORY, "Library", _techEra));
-            functionalities.push_back(Functionality(HEALTH, "Medical Centre", _techEra));
-            functionalities.push_back(Functionality(DEFENDANT, "Police Station", _techEra));
-            break;
-        case METROPOLIS:
-            name = "Metropolis";
-            functionalities.push_back(Functionality(HISTORY, "Library", _techEra));
-            functionalities.push_back(Functionality(HEALTH, "Hospital", _techEra));
-            functionalities.push_back(Functionality(DEFENDANT, "Army", _techEra));
-            break;
-        default:
-            name = "Hamlet";
-            break;
-    }
+    identifyPopType(_popNum, populationType);
+    identifyFunctionality(populationType, name, functionalities, _techEra);
 };
 PopulationCentre& PopulationCentre::operator++() {
     yearSpent++;
+    currentYear++;
+    TECHNOLOGY_ERA techEraType = technology->getTechEra();
+
+    if (currentYear <= END_OF_EARLY_AGE) {
+        techEraType = EARLY_AGE;
+    } else if (currentYear <= END_OF_MIDDLE_AGE) {
+        techEraType = MIDDLE_AGE;
+    } else {
+        techEraType = MODERN_AGE;
+    }
+
+    if (techEraType == technology->getTechEra()) {
+        // increase elements of the population centre
+        technology->increaseLevel();
+        population->increasePopNum();
+        population->increaseLevel();
+        for(int i = 0; i < functionalities.size(); i++) {
+            functionalities[i].increaseLevel();
+        }
+    } else {
+        // the tech era is changed which would affect all other elements
+        // but the population would just increase based on the old grow rate before being re-generated
+        population->increasePopNum();
+        technology = new TechEra(techEraType);
+        population->generatePopImpact(*technology);
+        identifyPopType(population->getPopNum(), populationType);
+        identifyFunctionality(populationType, name, functionalities, *technology);
+    }
+
     return *this;
 };
 void PopulationCentre::display() {
@@ -237,3 +301,64 @@ void PopulationCentre::techEraAffected(TechEra techEra) {
 };
 int PopulationCentre::getYearSpent() { return yearSpent; };
 void PopulationCentre::setYearSpent(int year) { yearSpent = year; };
+std::string PopulationCentre::getName() { return name; };
+void PopulationCentre::setName(std::string _name) { name = _name; };
+POPULATION_CENTRE PopulationCentre::getType() { return populationType; };
+void PopulationCentre::setType(POPULATION_CENTRE _type) { populationType = _type; };
+void PopulationCentre::decreasePop(bool isSignificant) {
+    double diff;
+    if (isSignificant) {
+        diff = intRandom(5, 10);
+    } else {
+        diff = intRandom(2, 5);
+    }
+
+    double growRateTemp = population->getGrowRate() * diff;
+    int newPopNum = population->getPopNum() - (population->getPopNum() * growRateTemp);
+    population->setPopNum(newPopNum);
+}
+
+void identifyPopType(int _popNum, POPULATION_CENTRE &populationType) {
+    if (_popNum > MIN_OF_HAMLET && _popNum < MAX_OF_HAMLET) {
+        populationType = HAMLET;
+    } else if (_popNum > MIN_OF_VILLAGE && _popNum < MAX_OF_VILLAGE) {
+        populationType = VILLAGE;
+    } else if (_popNum > MIN_OF_TOWN && _popNum < MAX_OF_TOWN) {
+        populationType = TOWN;
+    } else if (_popNum > MIN_OF_CITY && _popNum < MAX_OF_CITY) {
+        populationType = CITY;
+    } else if (_popNum > MIN_OF_METROPOLIS && _popNum < MAX_OF_METROPOLIS) {
+        populationType = METROPOLIS;
+    }
+};
+void identifyFunctionality(POPULATION_CENTRE populationType, std::string &name, std::vector<Functionality> &functionalities, TechEra _techEra) {
+    switch (populationType) {
+        case HAMLET:
+            name = "Hamlet";
+            break;
+        case VILLAGE:
+            name = "Village";
+            functionalities.push_back(Functionality(HISTORY, "Story Teller", _techEra));
+            break;
+        case TOWN:
+            name = "Town";
+            functionalities.push_back(Functionality(HISTORY, "Book Shop", _techEra));
+            functionalities.push_back(Functionality(HEALTH, "Clinic", _techEra));
+            break;
+        case CITY:
+            name = "City";
+            functionalities.push_back(Functionality(HISTORY, "Library", _techEra));
+            functionalities.push_back(Functionality(HEALTH, "Medical Centre", _techEra));
+            functionalities.push_back(Functionality(DEFENDANT, "Police Station", _techEra));
+            break;
+        case METROPOLIS:
+            name = "Metropolis";
+            functionalities.push_back(Functionality(HISTORY, "Library", _techEra));
+            functionalities.push_back(Functionality(HEALTH, "Hospital", _techEra));
+            functionalities.push_back(Functionality(DEFENDANT, "Army", _techEra));
+            break;
+        default:
+            name = "Hamlet";
+            break;
+    }
+};

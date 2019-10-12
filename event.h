@@ -19,6 +19,7 @@
             int getOccurChance();
             void setOccurChance(int);
             EVENT_TYPE getEventType();
+            int getLevel();
     };
 
 #endif

@@ -17,13 +17,15 @@
             void display();
             void generateLevel(int, int);
             void generateGrowRate(double, double);
-            void affectGrowRate();
+            void affectedByBreakthrough();
             void affectLevel(double otherLevel);
             void setLevel(double);
             double getLevel();
             void setGrowRate(double);
             double getGrowRate();
             TECHNOLOGY_ERA getTechEra();
+            void increaseGrowRate();
+            void increaseLevel();
     };
 
     class Element {
@@ -38,6 +40,7 @@
         double getLevel();
         void setGrowRate(double);
         double getGrowRate();
+        void increaseLevel();
     };
 
     class Functionality : public Element {
@@ -48,6 +51,7 @@
             Functionality();
             Functionality(FUNCTION_TYPE, std::string, TechEra);
             void display();
+            FUNCTION_TYPE getType();
     };
 
     class Population : public Element {
@@ -58,8 +62,14 @@
             Population(int);
             void generatePopImpact(TechEra);
             int getPopNum();
+            void setPopNum(int);
             void display();
+            void increasePopNum();
+            void affectedByRevolution(PopulationCentre&);
     };
+
+    void identifyPopType(int, POPULATION_CENTRE&);
+    void identifyFunctionality(POPULATION_CENTRE, std::string&, std::vector<Functionality>&, TechEra);
 
     class PopulationCentre {
         private:
@@ -83,6 +93,11 @@
             void display();
             int getYearSpent();
             void setYearSpent(int);
+            std::string getName();
+            void setName(std::string);
+            POPULATION_CENTRE getType();
+            void setType(POPULATION_CENTRE);
+            void decreasePop(bool = false);
     };
 
 #endif
