@@ -89,6 +89,7 @@ void handlingEventData(std::vector<Event> &Events) {
 
     while (getline(inFile, line)) {
         std::string name, description;
+        EVENT_TYPE eventType;
 
         delimiterPos = line.find(DELIMITER);
         name = line.substr(0, delimiterPos);
@@ -96,7 +97,27 @@ void handlingEventData(std::vector<Event> &Events) {
 
         description = line;
 
-        Events.push_back(Event(name, description));
+        if (name == "Information") {
+            eventType = INFORMATION;
+        } else if (name == "Clue") {
+            eventType = CLUE;
+        } else if (name == "Artifact") {
+            eventType = ARTIFACT;
+        } else if (name == "Illness") {
+            eventType = ILLNESS;
+        } else if (name == "War") {
+            eventType = WAR;
+        } else if (name == "Technological breakthrough") {
+            eventType = TECH_BREAKTHROUGH;
+        } else if (name == "Social revolution") {
+            eventType = SOCIAL_REVOLUTION;
+        } else if (name == "Interaction") {
+            eventType = INTERACTION;
+        } else if (name == "Meeting") {
+            eventType = MEETING;
+        }
+
+        Events.push_back(Event(name, description, eventType));
 
         if (inFile.eof()) break;
     }

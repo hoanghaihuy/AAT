@@ -81,6 +81,8 @@
             void setTechEra(TechEra);
             void techEraAffected(TechEra);
             void display();
+            int getYearSpent();
+            void setYearSpent(int);
     };
 
 #endif

@@ -19,6 +19,8 @@
     const int MIN_JUMP = 1;
     const int MAX_JUMP = 10;
     const std::string DELIMITER = ";";
+    const int FINISH_ARTIFACT = 100;
+    const int MAX_SPENT_YEAR = 10;
 
     // chrononaut
     const int MAX_AGE = 40;
@@ -53,4 +55,9 @@
     const int MAX_OF_CITY = 999999;
     const int MIN_OF_METROPOLIS = 1000000;
     const int MAX_OF_METROPOLIS = 1500000;
+
+    // event
+    enum EVENT_TYPE {INFORMATION, CLUE, ARTIFACT, ILLNESS, WAR, TECH_BREAKTHROUGH, SOCIAL_REVOLUTION, INTERACTION, MEETING};
+    const int CHANCE_FIND_ARTIFACT = 4;
+    const int CHANCE_FIND_OTHER = 12;
 #endif

@@ -8,6 +8,6 @@
     #include "event.h"
     #include "handlingData.h"
 
-    void generateEvent(int, std::vector<Event> Events);
+    Event generateEvent(int, std::vector<Event> &Events);
     void findArtifact(Artifact &artifact, std::vector<Chrononaut*> &Chrononauts, int &numberOfJumps, TechEra &techEra, PopulationCentre &popCentre);
 #endif

@@ -140,6 +140,7 @@ PopulationCentre::PopulationCentre() {
     population = nullptr;
     name = "";
     populationType = HAMLET;
+    yearSpent = 0;
 };
 PopulationCentre::PopulationCentre(TechEra _techEra, int _popNum, int _currentYear) {
     technology = &_techEra;
@@ -189,7 +190,10 @@ PopulationCentre::PopulationCentre(TechEra _techEra, int _popNum, int _currentYe
             break;
     }
 };
-// PopulationCentre& PopulationCentre::operator++() {};
+PopulationCentre& PopulationCentre::operator++() {
+    yearSpent++;
+    return *this;
+};
 void PopulationCentre::display() {
     technology->display();
     std::cout << "This is a " << name << " with ";
@@ -231,3 +235,5 @@ void PopulationCentre::techEraAffected(TechEra techEra) {
     // update tech era of popCentre
     technology = &techEra;
 };
+int PopulationCentre::getYearSpent() { return yearSpent; };
+void PopulationCentre::setYearSpent(int year) { yearSpent = year; };
