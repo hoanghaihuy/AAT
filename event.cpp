@@ -15,9 +15,9 @@ void Event::generateLevel(PopulationCentre popCentre) {
     level = (averageElementLevel + eventPureLevel) / 2;
 };
 void Event::display() {
-    std::cout << name << " " << description << " " << type << std::endl;
+    std::cout << description << std::endl;
 };
 int Event::getOccurChance() { return occurChance; };
 void Event::setOccurChance(int chance) { occurChance = chance; };
 EVENT_TYPE Event::getEventType() { return type; };
-int Event::getLevel() { return level; };
+double Event::getLevel() { return level; };

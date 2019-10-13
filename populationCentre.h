@@ -34,8 +34,6 @@
         double growRate;
     public:
         void generateLevel(int, int);
-        void affectGrowRate();
-        void affectLevel();
         void setLevel(double);
         double getLevel();
         void setGrowRate(double);
@@ -65,7 +63,6 @@
             void setPopNum(int);
             void display();
             void increasePopNum();
-            void affectedByRevolution(PopulationCentre&);
     };
 
     void identifyPopType(int, POPULATION_CENTRE&);
@@ -89,7 +86,6 @@
             int getCurrentYear();
             void setCurrentYear(int);
             void setTechEra(TechEra);
-            void techEraAffected(TechEra);
             void display();
             int getYearSpent();
             void setYearSpent(int);
@@ -98,6 +94,7 @@
             POPULATION_CENTRE getType();
             void setType(POPULATION_CENTRE);
             void decreasePop(bool = false);
+            void affectedByRevolution();
     };
 
 #endif

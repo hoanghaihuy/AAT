@@ -1,5 +1,5 @@
-IPhone 2G;the first smartphone designed and marketed by Apple Inc;527
-The Benz Patent-Motorwagen;widely regarded as the world's first production automobile, that is, a vehicle designed to be propelled by an internal combustion engine;649
-Telephone;apparatus for transmitting vocal or other sounds telegraphically;659
-Aeroplane;a powered, fixed-wing aircraft that is propelled forward by thrust from a jet engine, propeller or rocket engine;600
-Phonograph;a device for the mechanical recording and reproduction of sound;600
+IPhone 2G;the first smartphone designed and marketed by Apple Inc. Although several aspects of the iPhone are considered obsolete by current standards, the device is seen as an archetype of smartphones, eliminating physical hardware buttons and stylus in favor of a touch-based user interface which is the pioneer of the revolution of smartphones.;500;2019,2016,2013,2010,2007
+The Benz Patent-Motorwagen;built in 1885, is widely regarded as the world's first production automobile, that is, a vehicle designed to be propelled by an internal combustion engine.;600;1915,1905,1900,1895,1885
+The telephone;In 1876, Alexander Graham Bell was the first to be granted a United States patent for a device that produced clearly intelligible replication of the human voice. This instrument was further developed by many others. The telephone was the first device in history that enabled people to talk directly with each other across large distances. Telephones rapidly became indispensable to businesses, government and households.;600;1915,1900,1890,1880,1876
+The first aeroplane;The Wright brothers invented and flew the first airplane in 1903, recognized as "the first sustained and controlled heavier-than-air powered flight".;550;1960,1945,1930,1915,1903
+The first phonograph;The phonograph was invented in 1877 by Thomas Edison. While other inventors had produced devices that could record sounds, Edison's phonograph was the first to be able to reproduce the recorded sound.;600;1915,1900,1890,1880,1877

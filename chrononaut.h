@@ -22,7 +22,7 @@
             void generateAbility();
             void improveAbility(TechEra);
             void affectAbility();
-            int getAbilityLevel();
+            double getAbilityLevel();
             void display();
             double getHealth();
             void setHealth(double);
@@ -30,6 +30,9 @@
             void getIllness();
             void getWar();
             bool isDead();
+            std::string getName();
+            double findInfo(Event, bool);
+            int getType();
     };
 
     class JumpEngineer : public Chrononaut {
@@ -47,6 +50,7 @@
             Doctor();
             Doctor(std::string, int);
             double cure(Event, PopulationCentre);
+            void heal(std::vector<Chrononaut*>&, PopulationCentre, Event);
     };
 
     class Historian : public Chrononaut {
@@ -54,8 +58,8 @@
         public:
             Historian();
             Historian(std::string, int);
-            double findInfo(Event, bool);
             void solvedEvent(double);
+            double findInfo(Event, bool);
     };
 
     class Security : public Chrononaut {

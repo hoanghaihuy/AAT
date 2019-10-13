@@ -53,7 +53,7 @@ double TechEra::getGrowRate() {
     return growRate;
 };
 void TechEra::display() {
-    std::cout << "Technology era: " << name << ": " << std::setiosflags(std::ios::fixed | std::ios::showpoint) << std::setprecision(2) << level << ", " << std::setprecision(5) << growRate << std::endl;
+    std::cout << "Technology era: " << name << ": level " << std::setiosflags(std::ios::fixed | std::ios::showpoint) << std::setprecision(2) << level << ", growth rate " << std::setprecision(5) << growRate << std::endl;
 };
 TECHNOLOGY_ERA TechEra::getTechEra() { return type; }
 void TechEra::affectLevel(double otherLevel) {
@@ -93,7 +93,7 @@ void TechEra::affectedByBreakthrough() {
         type = MODERN_AGE;
         name = "Modern Age";
     }
-    std::cout << "Technology era has been increased with the new level " << level << " and new grow rate " << growRate << std::endl;
+    std::cout << "Technology era has been increased with the new level " << std::setprecision(2) << level << " and new grow rate " << std::setprecision(5) << growRate << std::endl;
 };
 
 // Element class functions
@@ -150,7 +150,7 @@ Functionality::Functionality(FUNCTION_TYPE _type, std::string _name, TechEra tec
     }
 };
 void Functionality::display() {
-    std::cout << name << " " << std::setprecision(2) << getLevel() << " " << std::setprecision(5) << getGrowRate();
+    std::cout << name << " (level: " << std::setprecision(2) << getLevel() << " growth rate: " << std::setprecision(5) << getGrowRate() << ")";
 };
 FUNCTION_TYPE Functionality::getType() { return type; };
 
@@ -177,34 +177,6 @@ void Population::display() {
 };
 void Population::increasePopNum() {
     number += (Element::getGrowRate() * number);
-};
-void Population::affectedByRevolution(PopulationCentre &popCentre) {
-    // revolution could cause increase or decrease of the growth rate of population centre
-    // the new number of population and level will be generated 1 time based on the new growth rate
-    double diff = intRandom(1, 200);
-    setGrowRate(getGrowRate() * (diff / 100));
-    setLevel(getLevel() + getLevel() * getGrowRate());
-    increasePopNum();
-
-    std::string name;
-    POPULATION_CENTRE type;
-    identifyPopType(getPopNum(), type);
-    identifyFunctionality(type, name, popCentre.functionalities, *(popCentre.technology));
-    popCentre.setType(type);
-    popCentre.setName(name);
-
-    std::cout << "After revolution, this place has become a " << popCentre.getName() << " which has ";
-    if (popCentre.functionalities.size() > 0) {
-        for (int i = 0; i < popCentre.functionalities.size(); i++) {
-            popCentre.functionalities[i].display();
-            if (i != popCentre.functionalities.size() - 1) std::cout << ", ";
-        }
-        std::cout << ". ";
-    } else {
-        std::cout << " no functionalities.";
-    }
-    std::cout << "With number of ";
-    display();
 };
 
 // PopulationCentre class functions
@@ -260,7 +232,7 @@ PopulationCentre& PopulationCentre::operator++() {
 };
 void PopulationCentre::display() {
     technology->display();
-    std::cout << "This is a " << name << " with ";
+    std::cout << "This is a " << name << " in " << currentYear << " with ";
     population->display();
     if (functionalities.size() > 0) {
         std::cout << "This " << name << " has: ";
@@ -285,20 +257,6 @@ PopulationCentre::~PopulationCentre() {
 void PopulationCentre::setTechEra(TechEra techEra) {
     technology = &techEra;
 }
-void PopulationCentre::techEraAffected(TechEra techEra) {
-    // update population level and growth rate based on the diff between it and tech era with new level
-    // and growth rate of new tech era
-    population->setLevel((technology->getLevel() / population->getLevel()) * techEra.getLevel());
-    population->setGrowRate((technology->getGrowRate() / population->getGrowRate()) * techEra.getGrowRate());
-
-    // update functionalities growth rate
-    for (int i = 0; i < functionalities.size(); i++) {
-        functionalities[i].setGrowRate(techEra.getGrowRate());
-    }
-
-    // update tech era of popCentre
-    technology = &techEra;
-};
 int PopulationCentre::getYearSpent() { return yearSpent; };
 void PopulationCentre::setYearSpent(int year) { yearSpent = year; };
 std::string PopulationCentre::getName() { return name; };
@@ -317,6 +275,34 @@ void PopulationCentre::decreasePop(bool isSignificant) {
     int newPopNum = population->getPopNum() - (population->getPopNum() * growRateTemp);
     population->setPopNum(newPopNum);
 }
+void PopulationCentre::affectedByRevolution() {
+    // revolution could cause increase or decrease of the growth rate of population centre
+    // the new number of population and level will be generated 1 time based on the new growth rate
+    double diff = intRandom(1, 200);
+    population->setGrowRate(population->getGrowRate() * (diff / 100));
+    population->setLevel(population->getLevel() + population->getLevel() * population->getGrowRate());
+    population->increasePopNum();
+
+    std::string name;
+    POPULATION_CENTRE type;
+    identifyPopType(population->getPopNum(), type);
+    identifyFunctionality(type, name, functionalities, *technology);
+    setType(type);
+    setName(name);
+
+    std::cout << "After revolution, this place has become a " << getName() << " which has ";
+    if (functionalities.size() > 0) {
+        for (int i = 0; i < functionalities.size(); i++) {
+            functionalities[i].display();
+            if (i != functionalities.size() - 1) std::cout << ", ";
+        }
+        std::cout << ". ";
+    } else {
+        std::cout << " no functionalities. ";
+    }
+    std::cout << "With number of ";
+    population->display();
+};
 
 void identifyPopType(int _popNum, POPULATION_CENTRE &populationType) {
     if (_popNum > MIN_OF_HAMLET && _popNum < MAX_OF_HAMLET) {
@@ -332,6 +318,7 @@ void identifyPopType(int _popNum, POPULATION_CENTRE &populationType) {
     }
 };
 void identifyFunctionality(POPULATION_CENTRE populationType, std::string &name, std::vector<Functionality> &functionalities, TechEra _techEra) {
+    functionalities.clear();
     switch (populationType) {
         case HAMLET:
             name = "Hamlet";

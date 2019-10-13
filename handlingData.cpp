@@ -14,10 +14,13 @@ void handlingArtifactData(int numberOfArtifacts, std::vector<Artifact> &Artifact
 
     std::string line;
     size_t delimiterPos;
+    std::string CLUE_DELIMITER = ",";
 
     while (getline(inFile, line)) {
         Artifact artifact;
         std::string name, description;
+        std::vector<int> clues;
+        int clue;
         int period;
 
         delimiterPos = line.find(DELIMITER);
@@ -28,9 +31,18 @@ void handlingArtifactData(int numberOfArtifacts, std::vector<Artifact> &Artifact
         description = line.substr(0, delimiterPos);
         line.erase(0, delimiterPos + 1);
 
-        period = stoi(line);
+        delimiterPos = line.find(DELIMITER);
+        period = stoi(line.substr(0, delimiterPos));
+        line.erase(0, delimiterPos + 1);
 
-        artifact = Artifact(name, description, period);
+        for (int i = 0; i < MAX_CLUE; i++) {
+            delimiterPos = line.find(CLUE_DELIMITER);
+            clue = stoi(line.substr(0, delimiterPos));
+            line.erase(0, delimiterPos + 1);
+            clues.push_back(clue);
+        }
+
+        artifact = Artifact(name, description, period, clues);
         array.push_back(artifact);
 
         if (inFile.eof()) break;

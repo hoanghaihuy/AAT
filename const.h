@@ -21,6 +21,7 @@
     const std::string DELIMITER = ";";
     const int FINISH_ARTIFACT = 100;
     const int MAX_SPENT_YEAR = 10;
+    const int MAX_CLUE = 5;
 
     // chrononaut
     const int MAX_AGE = 40;
