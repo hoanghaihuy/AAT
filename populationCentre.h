@@ -74,7 +74,6 @@
             POPULATION_CENTRE populationType;
             int yearSpent;
             int currentYear;
-            void generateFunctionality();
         public:
             TechEra *technology;
             std::vector<Functionality> functionalities;

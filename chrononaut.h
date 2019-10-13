@@ -12,7 +12,6 @@
             int actualAge;
             int travelAge;
             double abilityLevel;
-            int chanceAffected;
             double health;
         public:
             Chrononaut();
@@ -58,7 +57,6 @@
         public:
             Historian();
             Historian(std::string, int);
-            void solvedEvent(double);
             double findInfo(Event, bool);
     };
 

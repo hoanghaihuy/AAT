@@ -146,11 +146,8 @@ double Historian::findInfo(Event event, bool isEvent) {
         double generalInfo = intRandom(10, 20);
         info = (Chrononaut::getAbilityLevel() / 100) * generalInfo;
     }
-    solvedEvent(info);
-    return info;
-};
-void Historian::solvedEvent(double info) {
     std::cout << "Historian has found " << std::setprecision(2) << info << "% of the current artifact." << std::endl;
+    return info;
 };
 
 // Security

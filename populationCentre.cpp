@@ -131,9 +131,7 @@ Functionality::Functionality(FUNCTION_TYPE _type, std::string _name, TechEra tec
             } else if (name == "Book shop") {
                 generateLevel(25, 50);
             } else if (name == "Library") {
-                generateLevel(50, 75);
-            } else {
-                generateLevel(75, 100);
+                generateLevel(50, 100);
             }
             break;
         case HEALTH:
